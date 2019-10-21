@@ -1,0 +1,25 @@
+Projektin aiheena on TODO -lista.
+
+Ominaisuuksia:
+- Tehtävien lisääminen, muokkaaminen ja poistaminen TODO -listaan
+- Tehtävän eräpäivä/ajastin/muistutin ja tehtävien merkitseminen suoritetuksi
+- Mahdollisuus lisätä katuosoite tehtävään (joka näkyy pinninä kartassa)
+- Mahdollisuus lisätä kommentti tehtävään
+
+Suorittamattomat ja suoritetut tehtävät näkyvät eri "tabeissa". Kolmas tabi on asetukset, josta voi vaihtaa sovelluksen värimaailmaa ja mahdollisesti myös kieltä.
+
+TABIT:
+    => tehtävät/assignments
+    => suoritetut tehtävät/completed assignments
+    => asetukset/settings
+
+TEHTÄVÄT:
+    - Otsikko
+    - Kuvaus
+    - Eräpäivä
+    - Sijainti (google maps)
+
+    Tehtävät -välilehdellä näkyy vain tehtävän otsikko ja eräpäivä. Klikkaamalla tehtävää esiin tulee loput tiedot kyseisestä tehtävästä, sekä mahdollisuus muokkaukseen ja poistamiseen.
+    Tehtävän voi suorittaa painamalla tehtävät-välilehdellä olevaa jotain painiketta, jolloin tehtävä siirtyy suoritettuihin tehtäviin.
+
+    Suoritetut tehtävät -välilehdeltä tehtävän voi poistaa tai määritellä uudelleen tekemättömäksi.

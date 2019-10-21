@@ -1,7 +1,8 @@
 /**
  * TODOlistproject - Jesse Könönen
+ * App.js
  * 
- * Program entry point
+ * Program entry point.
  */
 
 import { main } from "./main";
