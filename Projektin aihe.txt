@@ -14,10 +14,10 @@ TABIT:
     => asetukset/settings
 
 TEHTÄVÄT:
-    - Otsikko
-    - Kuvaus
-    - Eräpäivä
-    - Sijainti (google maps)
+    - Otsikko/title
+    - Kuvaus/description
+    - Eräpäivä/expiration
+    - Sijainti (google maps)/location
 
     Tehtävät -välilehdellä näkyy vain tehtävän otsikko ja eräpäivä. Klikkaamalla tehtävää esiin tulee loput tiedot kyseisestä tehtävästä, sekä mahdollisuus muokkaukseen ja poistamiseen.
     Tehtävän voi suorittaa painamalla tehtävät-välilehdellä olevaa jotain painiketta, jolloin tehtävä siirtyy suoritettuihin tehtäviin.
