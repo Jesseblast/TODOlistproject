@@ -6,22 +6,24 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, TextInput, FlatList, Alert, AsyncStorage } from "react-native";
+import { View, Text, Button, TextInput, Alert, AsyncStorage } from "react-native";
 import { styles } from "./style";
 
 export const EditAssignmentScreen = (props) => {
     const [assignments, setAssignments] = useState(undefined);  // All assignments
     const [assignment, setAssignment] = useState(undefined);    // The assignment that's being edited
+    const [assignmentIndex, setAssignmentIndex] = useState(0);  // And the index of the assignment that's being edited
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [expiration, setExpiration] = useState("");
     const [location, setLocation] = useState("");
-    const [completed, setCompleted] = useState(null);   // Is the assignment completed?
+    const [completed, setCompleted] = useState(null);           // Is the assignment completed?
 
     useEffect(() => { loadAssignments(); }, [])
     useEffect(() => { findAssignment(props.navigation.getParam("key")) }, [assignments]);
     useEffect(() => { setValues(); }, [assignment]);
 
+    // Load all assignments
     const loadAssignments = async () => {
         try {
             const items = await AsyncStorage.getItem("items");
@@ -34,19 +36,32 @@ export const EditAssignmentScreen = (props) => {
         }
     }
 
+    // Save edited assignment
     const saveAssignment = async() => {
-        try {
+        assignments[assignmentIndex].title = title;
+        assignments[assignmentIndex].description = description;
+        assignments[assignmentIndex].expiration = expiration;
+        assignments[assignmentIndex].location = location;
+        assignments[assignmentIndex].completed = completed;
 
+        try {
+            const stringifiedData = JSON.stringify(assignments);
+            await AsyncStorage.setItem("items", stringifiedData);
         } catch (error) {
             Alert.alert("Error saving data!");
         }
+
+        props.navigation.goBack();
     }
 
+    // Find assignment by key
     const findAssignment = (key) => {
         if (assignments === undefined) return;
         setAssignment(assignments.find((item) => item.key === key));
+        setAssignmentIndex(assignments.findIndex((item) => item.key === key));
     }
 
+    // Set local variables
     const setValues = () => {
         if (assignment === undefined) return;
         setTitle(assignment.title);
@@ -62,26 +77,46 @@ export const EditAssignmentScreen = (props) => {
         setDescription(assignment.description);
         setExpiration(assignment.expiration);
         setLocation(assignment.location);
+        setCompleted(assignment.completed);
+    }
+
+    // Delete this assignment
+    const deleteAssignment = async () => {
+        console.log("Deleting");
+        const newDataArray = assignments;
+        newDataArray.splice(assignmentIndex, 1);
+
+        try {
+            const stringifiedData = JSON.stringify(newDataArray);
+            await AsyncStorage.setItem("items", stringifiedData);
+        } catch (error) {
+            Alert.alert("Error saving data!");
+        }
+
+        props.navigation.goBack();
     }
 
 
     return (
         <View style={styles.viewContainer}>
-
-
             <Text style={styles.header}>Edit "{title}"</Text>
 
-            {/* There should be only one button which says "Mark as completed/incompleted" */}
-            <Button
-                title="Mark as done"
-                onPress={() => setCompleted(true)}
-            />
-            <Button
-                title="Mark as undone"
-                onPress={() => setCompleted(false)}
-            />
+            {completed ? (
+                <Button
+                    title="Mark as incomplete"
+                    onPress={() => setCompleted(false)}
+                />
+            ) : (
+                <Button
+                    title="Mark as complete"
+                    onPress={() => setCompleted(true)}
+                />
+            )}
 
-            <Text>Is done? {(() => {if (completed) return "Yes"; else return "No"})()}</Text>
+            <Button 
+                title="Delete"
+                onPress={deleteAssignment}
+            />
 
             {/* Set title for new assignment */}
             <Text>Title</Text>

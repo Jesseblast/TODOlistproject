@@ -40,13 +40,11 @@ export const NewAssignmentScreen = (props) => {
         try {
             const items = await AsyncStorage.getItem("items");
             
-            // Assignments list exists
+            // Assignments list exists, this item is put after the last one
             if (items) {
                 const restoredData = JSON.parse(items);
-
-                // Find the latest id and add one to it 
-                var newKey = restoredData[restoredData.length - 1].key + 1;
-                data.key = newKey;
+                var newKey = parseInt(restoredData[restoredData.length - 1].key);
+                data.key = "" + (++newKey);
 
                 const dataArray = [...restoredData, data];
                 const stringifiedData = JSON.stringify(dataArray);
@@ -68,7 +66,7 @@ export const NewAssignmentScreen = (props) => {
             + ", location: " + data.location + ">");
 
         } catch (error) {
-            Alert.alert("Error fetching data!");
+            Alert.alert("Error saving data! " + error);
         }
 
         props.navigation.goBack();

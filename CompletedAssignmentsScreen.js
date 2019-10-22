@@ -1,18 +1,18 @@
 /**
- * TODOlistproject - Jesse Könönen
- * AssignmentsScreen.js
+ * 
+ * 
  * 
  * 
  */
 
 import React, { useState } from "react";
-import { View, Text, Button, FlatList, Alert, AsyncStorage } from "react-native";
+import { View, Text, FlatList, Alert, AsyncStorage } from "react-native";
 import { styles } from "./style";
 import { NavigationEvents } from "react-navigation";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export const AssignmentsScreen = (props) => {
-    const [assignments, setAssignments] = useState([]); // List of assignment objects
+export const CompletedAssignmentsScreen = (props) => {
+    const [assignments, setAssignments] = useState([]);
 
     // Fetch all assignments from persistent memory
     const getAssignments = async () => {
@@ -28,15 +28,7 @@ export const AssignmentsScreen = (props) => {
         }
     }
 
-    // Clear data for demo purposes (Delete later!)
-    const clear = async () => {
-        try {
-            await AsyncStorage.removeItem("items");
-            console.log("Data cleared"); setAssignments([]); return true;
-        } catch (error) {
-            console.log("Error clearing data"); setAssignments([]); return false;
-        }
-    }
+
 
     return (
         <View style={styles.viewContainer}>
@@ -46,17 +38,13 @@ export const AssignmentsScreen = (props) => {
                 onWillFocus={getAssignments}
             />
 
-            <Button 
-                title="Add new assignment"
-                onPress={() => props.navigation.navigate("NewAssignment")}
-            />
-            <Text style={styles.header}>Assignments</Text>
+            <Text style={styles.header}>Completed Assignments</Text>
 
             <FlatList 
                 style={{alignContent: "flex-start"}}
                 data={assignments}
                 renderItem={({item}) => { 
-                    if (item.completed) return; // Skip if the assignment is completed
+                    if (!item.completed) return; // Skip if the assignment is not completed
 
                     return (
                         <View style={{width: 300, height: 30, borderWidth: 2, borderColor: "#666", margin: 8, padding: 4}}>
@@ -67,14 +55,6 @@ export const AssignmentsScreen = (props) => {
                     ) 
                 }}
             />
-
-            {/* Clear all assignments for demoing purposes (remember to delete later!) */}
-            <Button 
-                title="Clear all (DEMO)"
-                onPress={clear}
-            />
-
         </View>
     )
 }
-
