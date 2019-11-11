@@ -16,7 +16,7 @@ export const EditAssignmentScreen = (props) => {
     const [assignmentIndex, setAssignmentIndex] = useState(0);  // And the index of the assignment that's being edited
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [expiration, setExpiration] = useState("");
+    const [expirationDate, setExpirationDate] = useState("");
     const [address, setAddress] = useState("");
     const [addressData, setAddressData] = useState(undefined);
     const [coordinates, setCoordinates] = useState({lat: 60.201373, lng: 24.934041});
@@ -52,7 +52,7 @@ export const EditAssignmentScreen = (props) => {
     const saveAssignment = async() => {
         assignments[assignmentIndex].title = title;
         assignments[assignmentIndex].description = description;
-        assignments[assignmentIndex].expiration = expiration;
+        assignments[assignmentIndex].expirationDate = expirationDate;
         assignments[assignmentIndex].address = address;
         assignments[assignmentIndex].coordinates = coordinates;
         assignments[assignmentIndex].completed = completed;
@@ -79,7 +79,7 @@ export const EditAssignmentScreen = (props) => {
         if (assignment === undefined) return;
         setTitle(assignment.title);
         setDescription(assignment.description);
-        setExpiration(assignment.expiration);
+        setExpirationDate(assignment.expirationDate);
         setAddress(assignment.address);
         setCoordinates(assignment.coordinates);
         setCompleted(assignment.completed);
@@ -89,7 +89,7 @@ export const EditAssignmentScreen = (props) => {
     const reset = () => {
         setTitle(assignment.title);
         setDescription(assignment.description);
-        setExpiration(assignment.expiration);
+        setExpirationDate(assignment.expirationDate);
         setAddress(assignment.address);
         setCompleted(assignment.completed);
     }
@@ -164,12 +164,12 @@ export const EditAssignmentScreen = (props) => {
                 value={description}
             />
 
-            {/* Set expiration day for new assignment */}
-            <Text>Expiration day</Text>
+            {/* Set expiration date for new assignment */}
+            <Text>Expiration date</Text>
             <TextInput 
                 style={styles.textInput}
-                onChangeText={(expiration) => setExpiration(expiration)}
-                value={expiration}
+                onChangeText={(expirationDate) => setExpirationDate(expirationDate)}
+                value={expirationDate}
             />
 
             {/* Set address for new assignment */}
