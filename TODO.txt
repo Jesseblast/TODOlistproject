@@ -1,2 +1,1 @@
-- Clean random comments and console.logs
-- Change "location" variable to "address"
+- Try to get dates working 

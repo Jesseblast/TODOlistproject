@@ -8,44 +8,58 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, TextInput, Alert, AsyncStorage } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+
+/**
+ * Pointlessly hard to get datepicker working although it is possible.
+ * React native isn't supporting this well enough and they are
+ * also dropping the support for the previous implementation
+ *  => https://facebook.github.io/react-native/docs/datepickerios
+ * 
+ * This either isn't working on current native version that I am using
+ *  => https://www.npmjs.com/package/react-native-datepicker
+ * 
+ * So, the expiration date will be just a string.
+ */
+import DateTimePicker from "@react-native-community/datetimepicker";        // Experimental
 import { styles } from "./style";
 
 export const NewAssignmentScreen = (props) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [expiration, setExpiration] = useState("");
-    const [location, setLocation] = useState("");
-    const [locationData, setLocationData] = useState(undefined);
+    const [expirationDate, setExpirationDate] = useState("");
+    const [address, setAddress] = useState("");
+    const [addressData, setAddressData] = useState(undefined);
     const [coordinates, setCoordinates] = useState({lat: 60.201373, lng: 24.934041});
 
     // Set coordinates to first search result whenever they are fetched
     useEffect(() => { 
-        if (locationData === undefined) return;
+        if (addressData === undefined) return;
         setCoordinates({
-            lat: locationData.results[0].locations[0].latLng.lat,
-            lng: locationData.results[0].locations[0].latLng.lng
+            lat: addressData.results[0].locations[0].latLng.lat,
+            lng: addressData.results[0].locations[0].latLng.lng
         })
-    }, [locationData]);
+    }, [addressData]);
 
     // Clear all input
     const clear = () => {
         setTitle("");
         setDescription("");
-        setExpiration("");
-        setLocation("");
+        setExpirationDate("");
+        setAddress("");
     }
 
     // Save the new assignment
     const save = async () => {
 
-        // Assignment data
+        // Data structure to be saved
         var data = {
             key: "0",
             completed: false,                // Is this assignment completed?
             title: title,
             description: description,
-            expiration: expiration,
-            location: location,
+            expirationDate: expirationDate,
+            address: address,
+            coordinates: coordinates
         }
 
         // Fetch any existing data
@@ -74,8 +88,8 @@ export const NewAssignmentScreen = (props) => {
             + ", completed: " + data.completed
             + ", title: " + data.title
             + ", description: " + data.description
-            + ", expiration: " + data.expiration
-            + ", location: " + data.location + ">");
+            + ", expirationDate: " + data.expirationDate
+            + ", address: " + data.address + ">");
 
         } catch (error) {
             Alert.alert("Error saving data! " + error);
@@ -94,12 +108,11 @@ export const NewAssignmentScreen = (props) => {
         fetch(url)
         .then((response) => response.json())
         .then((responseJson) => {
-            setLocationData(responseJson);
+            setAddressData(responseJson);
         })
         .catch((error) => {
             Alert.alert("Error! " + error);
         });
-
     }
 
     return (
@@ -122,25 +135,32 @@ export const NewAssignmentScreen = (props) => {
                 value={description}
             />
 
-            {/* Set expiration day for new assignment */}
-            <Text>Expiration day</Text>
+            {/* Set expiration date for new assignment */}
+            <Text>Expiration date</Text>
             <TextInput 
                 style={styles.textInput}
-                onChangeText={(expiration) => setExpiration(expiration)}
-                value={expiration}
+                onChangeText={(expirationDate) => setExpirationDate(expirationDate)}
+                value={expirationDate}
             />
+            
 
-            {/* Set location for new assignment */}
-            <Text>Location</Text>
+            {/* It's a hassle to get this working so forget it */}
+            {/*
+            <Text>Expiration date</Text>
+            <DateTimePicker 
+                mode="date"
+                value={expirationDate}
+                onChange={(expirationDate) => {setExpirationDate(expirationDate)}}
+            />
+            */}
+
+            {/* Set address for new assignment */}
+            <Text>Address</Text>
             <TextInput 
                 style={styles.textInput}
-                onChangeText={(location) => setLocation(location)}
-                value={location}
-            />
-
-            <Button 
-                title="Find address"
-                onPress={() => findLocationFromAddress(location)}
+                onChangeText={(address) => setAddress(address)}
+                onSubmitEditing={() => findLocationFromAddress(address)}
+                value={address}
             />
 
             <Button 
@@ -153,7 +173,7 @@ export const NewAssignmentScreen = (props) => {
                 onPress={save}
             />
 
-            {/* Test MapView */}
+            {/* View address on map */}
             <MapView 
                 style={{flex: 1}}
                 initialRegion={{

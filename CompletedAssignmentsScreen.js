@@ -47,9 +47,10 @@ export const CompletedAssignmentsScreen = (props) => {
                     if (!item.completed) return; // Skip if the assignment is not completed
 
                     return (
-                        <View style={{width: 300, height: 30, borderWidth: 2, borderColor: "#666", margin: 8, padding: 4}}>
+                        <View style={{flexBasis: "auto", borderWidth: 2, borderColor: "#666", margin: 8, padding: 4}}>
                             <TouchableOpacity onPress={() => props.navigation.navigate("EditAssignment", {key: item.key})}>
                                 <Text style={{fontSize: 16}}>{item.title}</Text>
+                                <Text style={{fontSize: 12, color: "darkgrey"}}>Due {item.expirationDate}</Text>
                             </TouchableOpacity>
                         </View>
                     ) 

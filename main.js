@@ -8,9 +8,9 @@
 import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
+
 import { AssignmentsTab } from "./AssignmentsTab";
 import { CompletedAssignmentsTab } from "./CompletedAssignmentsTab";
-
 import { SettingsTab } from "./SettingsTab";
 
 const AppNavigator = createBottomTabNavigator({
